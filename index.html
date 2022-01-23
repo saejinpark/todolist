@@ -35,6 +35,12 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
+        padding-bottom: 5vh;
+      }
+      #logout {
+        position: absolute;
+        left: 0;
+        bottom: 0;
       }
       .main {
         width: 70%;
@@ -42,6 +48,15 @@
       }
       article {
         width: 100%;
+      }
+      .colorAria {
+        font-size: 0;
+      }
+      .colorAria button {
+        width: 30px;
+        height: 30px;
+        margin: 0;
+        padding: 0;
       }
       .toDoList {
         display: flex;
@@ -76,6 +91,11 @@
         display: grid;
         grid-template-columns: 4fr 1fr 1fr;
       }
+      #date h2 span {
+        display: inline-block;
+        text-align: right;
+        width: 10%;
+      }
     </style>
   </head>
   <body class="nes-container body">
@@ -92,8 +112,9 @@
         />
         <button class="nes-btn is-primary">push</button>
       </form>
-      <div>
-        <article class="nes-balloon"></article>
+      <article class="nes-balloon colorAria">
+      </article>
+      <div class="header-inner">
         <article id="localInfo" class="nes-balloon">
           <h1><span id="city">city</span></h1>
           <h2><span id="weather">weather: </span></h2>
@@ -125,7 +146,7 @@
           <ul class="nes-list is-circle ul"></ul>
           <form class="nes-container form toDoForm">
             <input type="text" class="nes-input" maxlength="16" required />
-            <button class="nes-btn">add</button>
+            <button class="nes-btn is-primary">add</button>
           </form>
         </div>
       </article>
@@ -152,6 +173,8 @@
       const logout = () => {
         const logout = document.querySelector("#logout");
         logout.addEventListener("click", () => {
+          localStorage.removeItem("Pixel")
+          loadColor();
           const title = document.querySelector("#title");
           localStorage.removeItem("info");
           title.innerText = "";
@@ -286,9 +309,9 @@
             ul.innerHTML = "";
             tempToDay.forEach((element) => {
               const li = document.createElement("li");
-              const span = document.createElement("span")
+              const span = document.createElement("span");
               li.id = element.id;
-              span.classList = "nes-container"
+              span.classList = "nes-container";
               span.innerText = element.value;
               li.appendChild(span);
               const turnToDay = document.createElement("button");
@@ -318,10 +341,10 @@
           }
           tempToDo.forEach((element) => {
             const li = document.createElement("li");
-            const span = document.createElement("span")
+            const span = document.createElement("span");
             li.id = element.id;
             span.innerText = element.value;
-            span.classList = "nes-container"
+            span.classList = "nes-container";
             li.appendChild(span);
             const check = document.createElement("button");
             check.innerText = "success";
@@ -342,6 +365,39 @@
       const load = () => {
         toDayLoad();
         toDoLoad();
+      };
+      const changeColor = (event) => {
+        const id = event.target.id;
+        const localPixel = localStorage.getItem("Pixel");
+        const tempPixel = JSON.parse(localPixel)
+        tempPixel[id] = (tempPixel[id] + 1)%7
+        localStorage.setItem("Pixel", JSON.stringify(tempPixel))
+        loadColor();
+      }
+      const loadColor = () => {
+        const colorAria = document.querySelector(".colorAria");
+        colorAria.innerHTML = "";
+        const colorIndex = [
+          "white", "#209cee", "#92cc41", "#f7d51d", "#e76e55", "#d3d3d3", "black"
+        ];
+        const localPixel = localStorage.getItem("Pixel");
+        if(localPixel != null){
+          const tempPixel = JSON.parse(localPixel)
+          tempPixel.forEach((element, index) => {
+            const button = document.createElement("button");
+            button.id = index
+            button.style.backgroundColor = colorIndex[element]
+            button.addEventListener("click", changeColor)
+            colorAria.appendChild(button)
+          })
+        }else {
+          const Pixel = []
+          for(var i=0; i<112; i++){
+            Pixel.push(0)
+          }
+          localStorage.setItem("Pixel", JSON.stringify(Pixel))
+          loadColor();
+        }
       };
 
       const app = () => {
@@ -378,6 +434,7 @@
         logout();
         clock();
         load();
+        loadColor();
       };
       app();
     </script>
