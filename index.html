@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Momentum App</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
+    <style>
+      html, body, pre, code, kbd, samp {
+          font-family: "font-family you want to use";
+      }
+    </style>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body class="nes-balloon body">
+    <header class="nes-balloon header">
+      <article>
+        <h1 class="nes-balloon title" hidden><span id="title"></span><button id="logout">logout</button></h1>
+        <form id="loginForm" class="nes-balloon form title_input" hidden>
+          <input
+            type="text"
+            placeholder="name"
+            maxlength="10"
+            minlength="2"
+            required
+          />
+          <button class="nes-btn">push</button>
+        </form>
+        
+      </article>
+      <article id="localInfo" class="nes-balloon">
+        <h1><span id="city">city</span></h1>
+        <h2><span id="weather">weather</span>|<span id="temp">🌡️</span></h2>
+        <h3><span id="max_temp">max🌡️</span>|<span id="min_temp">min🌡️</span></h3>
+      </article>
+      <article id="date" class="nes-balloon">
+        <h1>0000년 00월 00일 0요일</h1>
+        <h2>
+          <span>am|pm</span><span>00</span>시<span>00</span>분<span>00</span>초
+        </h2>
+        <h2>
+          <span>00</span>:<span>00</span>:<span>00</span>:<span>000</span>
+        </h2>
+      </article>
+    </header>
+    <main class="nes-balloon main">
+      <article id="toDoList" class="toDoList">
+        <div class="nes-balloon toDay" id="toDay">
+          <h1>today</h1>
+          <ul class="nes-balloon ul"></ul>
+        </div>
+        <div class="nes-balloon toDo" id="toDo">
+          <h1>todo</h1>
+          <ul class="nes-balloon ul"></ul>
+          <form class="nes-balloon form">
+            <input type="text" />
+            <button class="nes-btn">add</button>
+          </form>
+        </div>
+      </article>
+    </main>
+
+    <script src="./js/app.js"></script>
+    <script>
+      app();
+    </script>
+  </body>
+</html>
