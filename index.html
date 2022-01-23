@@ -22,25 +22,26 @@
     </style>
     <style>
       .body {
-        height: 94vh;
-        width: 98vw;
+        font-family: "Press Start 2P";
+        height: 100vh;
+        width: 100vw;
         box-sizing: border-box;
         display: flex;
         justify-content: space-between;
       }
       .header {
-        display: grid;
-        grid-template-rows: 1fr 1fr 1fr;
-      }
-      .title {
-        height: 100%;
-      }
-      .title_input {
-        height: 100%;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
       }
       .main {
         width: 70%;
         display: flex;
+      }
+      article {
+        width: 100%;
       }
       .toDoList {
         display: flex;
@@ -50,7 +51,7 @@
       .toDay,
       .toDo {
         height: 100%;
-        width: 50%;
+        width: 100%;
       }
       .form {
         display: grid;
@@ -59,55 +60,71 @@
       }
       .ul {
         width: 100%;
-        height: 80%;
+        height: 90%;
+        overflow: hidden;
+      }
+      .toDoForm {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+      }
+      #toDay .ul li {
+        display: grid;
+        grid-template-columns: 3fr 1fr;
+      }
+      #toDo .ul li {
+        display: grid;
+        grid-template-columns: 4fr 1fr 1fr;
       }
     </style>
   </head>
-  <body class="nes-balloon body">
-    <header class="nes-balloon header">
-      <article>
-        <h1 class="nes-balloon title" hidden>
-          <span id="title"></span><button id="logout">logout</button>
-        </h1>
-        <form id="loginForm" class="nes-balloon form title_input" hidden>
-          <input
-            type="text"
-            placeholder="name"
-            maxlength="10"
-            minlength="2"
-            required
-          />
-          <button class="nes-btn">push</button>
-        </form>
-      </article>
-      <article id="localInfo" class="nes-balloon">
-        <h1><span id="city">city</span></h1>
-        <h2><span id="weather">weather</span>|<span id="temp">🌡️</span></h2>
-        <h3>
-          <span id="max_temp">max🌡️</span>|<span id="min_temp">min🌡️</span>
-        </h3>
-      </article>
-      <article id="date" class="nes-balloon">
-        <h1>0000년 00월 00일 0요일</h1>
-        <h2>
-          <span>am|pm</span><span>00</span>시<span>00</span>분<span>00</span>초
-        </h2>
-        <h2>
-          <span>00</span>:<span>00</span>:<span>00</span>:<span>000</span>
-        </h2>
-      </article>
+  <body class="nes-container body">
+    <header class="nes-container with-title header">
+      <h1 class="title" hidden><span id="title"></span></h1>
+      <button id="logout" class="nes-input">logout</button>
+      <form id="loginForm" class="nes-balloon form title_input" hidden>
+        <input
+          type="text"
+          placeholder="name"
+          maxlength="10"
+          minlength="2"
+          required
+        />
+        <button class="nes-btn is-primary">push</button>
+      </form>
+      <div>
+        <article class="nes-balloon"></article>
+        <article id="localInfo" class="nes-balloon">
+          <h1><span id="city">city</span></h1>
+          <h2><span id="weather">weather: </span></h2>
+          <h2><span id="temp">🌡️</span></h2>
+          <h3>
+            <span id="max_temp">max🌡️</span>|<span id="min_temp">min🌡️</span>
+          </h3>
+        </article>
+        <article id="date" class="nes-balloon">
+          <h1>0000년 00월 00일 0요일</h1>
+          <h2>
+            <span>am|pm</span>
+            <span>00</span>시<span>00</span>분<span>00</span>초
+          </h2>
+          <h2>
+            <span>00</span>:<span>00</span>:<span>00</span>:<span>000</span>
+          </h2>
+        </article>
+      </div>
     </header>
-    <main class="nes-balloon main">
+    <main class="nes-container main">
       <article id="toDoList" class="toDoList">
-        <div class="nes-balloon toDay" id="toDay">
-          <h1>today</h1>
-          <ul class="nes-balloon ul"></ul>
+        <div class="nes-container is-dark with-title toDay" id="toDay">
+          <h1 class="title">today</h1>
+          <ul class="nes-list is-circle ul"></ul>
         </div>
-        <div class="nes-balloon toDo" id="toDo">
-          <h1>todo</h1>
-          <ul class="nes-balloon ul"></ul>
-          <form class="nes-balloon form">
-            <input type="text" />
+        <div class="nes-container with-title toDo" id="toDo">
+          <h1 class="title">todo</h1>
+          <ul class="nes-list is-circle ul"></ul>
+          <form class="nes-container form toDoForm">
+            <input type="text" class="nes-input" maxlength="16" required />
             <button class="nes-btn">add</button>
           </form>
         </div>
@@ -156,16 +173,7 @@
             const temp_max = localInfo.querySelector("#max_temp");
             const temp_min = localInfo.querySelector("#min_temp");
             city.innerText = data.name;
-            if (data.weather[0].main == "Clear")
-              weather.innerText = "weather: 🌞";
-            if (data.weather[0].main == "Wind")
-              weather.innerText = "weather: 🌫️";
-            if (data.weather[0].main == "Clouds")
-              weather.innerText = "weather: ☁️";
-            if (data.weather[0].main == "Rain")
-              weather.innerText = "weather: ☔";
-            if (data.weather[0].main == "Snow")
-              weather.innerText = "weather: ☃️";
+            weather.innerText += data.weather[0].main;
             temp.innerText += data.main.temp + "˚C";
             temp_max.innerText += data.main.temp_max + "˚C";
             temp_min.innerText += data.main.temp_min + "˚C";
@@ -212,38 +220,46 @@
         setInterval(moment, 1);
       };
       const returnToDay = (event) => {
-        const id = event.target.parentNode.id;
-        const localToDay = localStorage.getItem("ToDay");
-        const tempToDay = JSON.parse(localToDay);
-        let returnToDayIndex = 0;
-        tempToDay.forEach((element, index) => {
-          if (element.id == id) returnToDayIndex = index;
-        });
-        const ToDo = tempToDay.splice(returnToDayIndex, 1)[0];
-        localStorage.setItem("ToDay", JSON.stringify(tempToDay));
         const localToDo = localStorage.getItem("ToDo");
         const tempToDo = JSON.parse(localToDo);
-        tempToDo.push(ToDo);
-        console.log(ToDo);
-        tempToDo.sort((a, b) => a.id - b.id);
-        localStorage.setItem("ToDo", JSON.stringify(tempToDo));
-        load();
+        if (tempToDo.length > 8) {
+          alert("장난치지 마세요");
+        } else {
+          const id = event.target.parentNode.id;
+          const localToDay = localStorage.getItem("ToDay");
+          const tempToDay = JSON.parse(localToDay);
+          let returnToDayIndex = 0;
+          tempToDay.forEach((element, index) => {
+            if (element.id == id) returnToDayIndex = index;
+          });
+          const ToDo = tempToDay.splice(returnToDayIndex, 1)[0];
+          localStorage.setItem("ToDay", JSON.stringify(tempToDay));
+          tempToDo.push(ToDo);
+          console.log(ToDo);
+          tempToDo.sort((a, b) => a.id - b.id);
+          localStorage.setItem("ToDo", JSON.stringify(tempToDo));
+          load();
+        }
       };
       const addToDay = (event) => {
-        const id = event.target.parentNode.id;
-        const localToDo = localStorage.getItem("ToDo");
-        const tempToDo = JSON.parse(localToDo);
-        let addToDayIndex = 0;
-        tempToDo.forEach((element, index) => {
-          if (element.id == id) addToDayIndex = index;
-        });
-        const addToDay = tempToDo.splice(addToDayIndex, 1)[0];
-        localStorage.setItem("ToDo", JSON.stringify(tempToDo));
         const localToDay = localStorage.getItem("ToDay");
         const tempToDay = JSON.parse(localToDay);
-        tempToDay.push(addToDay);
-        localStorage.setItem("ToDay", JSON.stringify(tempToDay));
-        load();
+        if (tempToDay.length > 8) {
+          alert("장난치지 마세요");
+        } else {
+          const id = event.target.parentNode.id;
+          const localToDo = localStorage.getItem("ToDo");
+          const tempToDo = JSON.parse(localToDo);
+          let addToDayIndex = 0;
+          tempToDo.forEach((element, index) => {
+            if (element.id == id) addToDayIndex = index;
+          });
+          const addToDay = tempToDo.splice(addToDayIndex, 1)[0];
+          localStorage.setItem("ToDo", JSON.stringify(tempToDo));
+          tempToDay.push(addToDay);
+          localStorage.setItem("ToDay", JSON.stringify(tempToDay));
+          load();
+        }
       };
       const delToDo = (event) => {
         const id = event.target.parentNode.id;
@@ -260,20 +276,29 @@
       const toDayLoad = () => {
         const localToDay = localStorage.getItem("ToDay");
         if (localToDay != null) {
-          const toDay = document.querySelector("#toDay");
-          const ul = toDay.querySelector("ul");
-          ul.innerHTML = "";
           const tempToDay = JSON.parse(localToDay);
-          tempToDay.forEach((element) => {
-            const li = document.createElement("li");
-            li.id = element.id;
-            li.innerText = element.value;
-            const turnToDay = document.createElement("button");
-            turnToDay.innerText = "↻";
-            turnToDay.addEventListener("click", returnToDay);
-            li.appendChild(turnToDay);
-            ul.appendChild(li);
-          });
+          const toDay = document.querySelector("#toDay");
+          if (tempToDay.length == 0) {
+            toDay.hidden = true;
+          } else {
+            toDay.hidden = false;
+            const ul = toDay.querySelector("ul");
+            ul.innerHTML = "";
+            tempToDay.forEach((element) => {
+              const li = document.createElement("li");
+              const span = document.createElement("span")
+              li.id = element.id;
+              span.classList = "nes-container"
+              span.innerText = element.value;
+              li.appendChild(span);
+              const turnToDay = document.createElement("button");
+              turnToDay.innerText = "return";
+              turnToDay.classList = "nes-btn is-warning";
+              turnToDay.addEventListener("click", returnToDay);
+              li.appendChild(turnToDay);
+              ul.appendChild(li);
+            });
+          }
         } else {
           localStorage.setItem("ToDay", JSON.stringify([]));
         }
@@ -285,16 +310,27 @@
           const ul = toDo.querySelector("ul");
           ul.innerHTML = "";
           const tempToDo = JSON.parse(localToDo);
+          const form = toDo.querySelector("form");
+          if (tempToDo.length > 8) {
+            form.hidden = true;
+          } else {
+            form.hidden = false;
+          }
           tempToDo.forEach((element) => {
             const li = document.createElement("li");
+            const span = document.createElement("span")
             li.id = element.id;
-            li.innerText = element.value;
+            span.innerText = element.value;
+            span.classList = "nes-container"
+            li.appendChild(span);
             const check = document.createElement("button");
-            check.innerText = "✔️";
+            check.innerText = "success";
+            check.classList = "nes-btn is-success";
             check.addEventListener("click", addToDay);
             li.appendChild(check);
             const del = document.createElement("button");
-            del.innerText = "❌";
+            del.innerText = "del";
+            del.classList = "nes-btn is-error";
             del.addEventListener("click", delToDo);
             li.appendChild(del);
             ul.appendChild(li);
