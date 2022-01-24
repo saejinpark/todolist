@@ -22,9 +22,8 @@
     </style>
     <style>
       .body {
-        font-family: "Press Start 2P";
         height: 100vh;
-        width: 100vw;
+        font-family: "Press Start 2P";
         box-sizing: border-box;
         display: flex;
         justify-content: space-between;
@@ -74,6 +73,7 @@
         width: 100%;
       }
       .ul {
+        padding: 0;
         width: 100%;
         height: 90%;
         overflow: hidden;
@@ -104,6 +104,7 @@
       <button id="logout" class="nes-input">logout</button>
       <form id="loginForm" class="nes-balloon form title_input" hidden>
         <input
+          class="nes-input"
           type="text"
           placeholder="name"
           maxlength="10"
