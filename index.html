@@ -36,6 +36,9 @@
         align-items: flex-start;
         padding-bottom: 5vh;
       }
+      .header-inner {
+        width: 100%;
+      }
       #logout {
         position: absolute;
         left: 0;
@@ -49,10 +52,10 @@
         width: 100%;
       }
       .colorAria {
-        font-size: 0;
+        display: grid;
+        grid-template-columns: repeat(14, 1fr);
       }
       .colorAria button {
-        width: 30px;
         height: 30px;
         margin: 0;
         padding: 0;
@@ -87,8 +90,8 @@
         display: grid;
         grid-template-columns: 3fr 1fr;
       }
-      
-      #toDo{
+
+      #toDo {
         margin: 4px;
       }
       #toDo .ul li {
@@ -106,7 +109,7 @@
     <header class="nes-container with-title header">
       <h1 class="title" hidden><span id="title"></span></h1>
       <button id="logout" class="nes-input">logout</button>
-      <form id="loginForm" class="nes-balloon form title_input" hidden>
+      <form id="loginForm" class="nes-container form title_input" hidden>
         <input
           class="nes-input"
           type="text"
@@ -117,8 +120,7 @@
         />
         <button class="nes-btn is-primary">push</button>
       </form>
-      <article class="nes-container colorAria">
-      </article>
+      <article class="nes-container colorAria"></article>
       <div class="header-inner">
         <article id="localInfo" class="nes-container">
           <h1><span id="city">city</span></h1>
@@ -128,7 +130,7 @@
             <span id="max_temp">max🌡️</span>|<span id="min_temp">min🌡️</span>
           </h3>
         </article>
-        <article id="date" class="nes-container">
+        <article id="date" class="nes-container ">
           <h1>0000년 00월 00일 0요일</h1>
           <h2>
             <span>am|pm</span>
@@ -178,7 +180,7 @@
       const logout = () => {
         const logout = document.querySelector("#logout");
         logout.addEventListener("click", () => {
-          localStorage.removeItem("Pixel")
+          localStorage.removeItem("Pixel");
           loadColor();
           const title = document.querySelector("#title");
           localStorage.removeItem("info");
@@ -237,9 +239,9 @@
         clock01span[2].innerText = minute;
         clock01span[3].innerText = second;
         const clock02span = clock02.querySelectorAll("span");
-        clock02span[0].innerText = hour > 10 ? hour : "0" + hour;
-        clock02span[1].innerText = minute > 10 ? minute : "0" + minute;
-        clock02span[2].innerText = second > 10 ? second : "0" + second;
+        clock02span[0].innerText = hour < 10 ? "0" + hour:hour;
+        clock02span[1].innerText = minute < 10 ? "0" + minute:minute;
+        clock02span[2].innerText = second < 10 ? "0" + second:second;
         if (millisecond < 10) millisecond = "00" + millisecond;
         else if (millisecond < 100) millisecond = "0" + millisecond;
         clock02span[3].innerText = millisecond;
@@ -374,33 +376,39 @@
       const changeColor = (event) => {
         const id = event.target.id;
         const localPixel = localStorage.getItem("Pixel");
-        const tempPixel = JSON.parse(localPixel)
-        tempPixel[id] = (tempPixel[id] + 1)%7
-        localStorage.setItem("Pixel", JSON.stringify(tempPixel))
+        const tempPixel = JSON.parse(localPixel);
+        tempPixel[id] = (tempPixel[id] + 1) % 7;
+        localStorage.setItem("Pixel", JSON.stringify(tempPixel));
         loadColor();
-      }
+      };
       const loadColor = () => {
         const colorAria = document.querySelector(".colorAria");
         colorAria.innerHTML = "";
         const colorIndex = [
-          "white", "#209cee", "#92cc41", "#f7d51d", "#e76e55", "#d3d3d3", "black"
+          "white",
+          "#209cee",
+          "#92cc41",
+          "#f7d51d",
+          "#e76e55",
+          "#d3d3d3",
+          "black",
         ];
         const localPixel = localStorage.getItem("Pixel");
-        if(localPixel != null){
-          const tempPixel = JSON.parse(localPixel)
+        if (localPixel != null) {
+          const tempPixel = JSON.parse(localPixel);
           tempPixel.forEach((element, index) => {
             const button = document.createElement("button");
-            button.id = index
-            button.style.backgroundColor = colorIndex[element]
-            button.addEventListener("click", changeColor)
-            colorAria.appendChild(button)
-          })
-        }else {
-          const Pixel = []
-          for(var i=0; i<112; i++){
-            Pixel.push(0)
+            button.id = index;
+            button.style.backgroundColor = colorIndex[element];
+            button.addEventListener("click", changeColor);
+            colorAria.appendChild(button);
+          });
+        } else {
+          const Pixel = [];
+          for (var i = 0; i < 112; i++) {
+            Pixel.push(0);
           }
-          localStorage.setItem("Pixel", JSON.stringify(Pixel))
+          localStorage.setItem("Pixel", JSON.stringify(Pixel));
           loadColor();
         }
       };
